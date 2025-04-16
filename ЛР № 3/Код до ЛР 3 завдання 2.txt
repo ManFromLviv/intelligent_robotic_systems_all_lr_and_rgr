@@ -1,0 +1,73 @@
+#include <Wire.h>
+#include <Adafruit_LiquidCrystal.h>
+
+// Ініціалізація об'єкта для роботи з LCD
+Adafruit_LiquidCrystal lcd(0);
+
+// Визначення пінів
+const int buttonPin = 13; // Пін кнопки
+const int motorPin1 = 7;  // Пін 1 для керування двигуном
+const int motorPin2 = 6;  // Пін 2 для керування двигуном
+
+bool direction = true;  // Напрямок руху двигуна (назад)
+
+void setup() {
+  // Налаштування пінів двигуна як виходи
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP); // Встановлення кнопки у режим INPUT_PULLUP
+
+  // Початковий стан двигуна (зупинений)
+  digitalWrite(motorPin1, LOW);
+  digitalWrite(motorPin2, LOW);
+
+  // Ініціалізація LCD-дисплея
+  Wire.begin();
+  lcd.begin(16, 2);
+  lcd.setBacklight(1);
+  lcd.clear();
+
+  // Відображення початкового тексту на дисплеї
+  lcd.setCursor(0, 0);
+  lcd.print("Direction: Forward");
+  lcd.setCursor(0, 1);
+  lcd.print("Speed: 0");
+}
+
+void loop() {
+  static bool lastButtonState = HIGH; // Збереження попереднього стану кнопки
+  bool buttonState = digitalRead(buttonPin); // Зчитування стану кнопки
+
+  // Перевірка, чи була кнопка натиснута (перехід з HIGH у LOW)
+  if (buttonState == LOW && lastButtonState == HIGH) {
+    direction = !direction; // Зміна напрямку руху двигуна
+    delay(1000); // Затримка у мс
+  }
+  lastButtonState = buttonState; // Оновлення стану кнопки
+
+  // Зчитування значення з аналогового датчика (наприклад, потенціометра)
+  int sensorValue = analogRead(A0);
+  // Перетворення значення сенсора у величину для керування швидкістю двигуна
+  int outputValue = ((sensorValue / 1024.0) * 5000) / 10;
+
+  // Керування двигуном у залежності від напрямку
+  if (direction) {
+    analogWrite(motorPin1, outputValue); // Вмикаємо мотор вперед
+    digitalWrite(motorPin2, LOW);
+  } else {
+    analogWrite(motorPin2, outputValue); // Вмикаємо мотор назад
+    digitalWrite(motorPin1, LOW);
+  }
+
+  // Оновлення даних на дисплеї
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Direction: ");
+  lcd.print(direction ? "Forward" : "Backward");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Speed: ");
+  lcd.print(outputValue); // Відображення поточної швидкості
+  
+  delay(1000); // Затримка перед наступним циклом у мс
+}

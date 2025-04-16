@@ -1,0 +1,34 @@
+// Визначення пінів для підключення
+const int buttonPin = 13; // Пін, до якого підключена кнопка
+const int motorPin1 = 7;  // Пін 1 для керування двигуном
+const int motorPin2 = 6;  // Пін 2 для керування двигуном
+
+bool motorDirection = false; // Змінна для збереження напрямку руху двигуна (назад)
+
+void setup() {
+    pinMode(buttonPin, INPUT_PULLUP); // Налаштування кнопки як вхідної з підтяжкою до живлення
+    pinMode(motorPin1, OUTPUT); // Налаштування пінів двигуна як виходи
+    pinMode(motorPin2, OUTPUT);
+
+    // Вимикаємо двигун на старті
+    digitalWrite(motorPin1, LOW);
+    digitalWrite(motorPin2, LOW);
+}
+
+void loop() {
+    if (digitalRead(buttonPin) == LOW) { // Перевірка, чи натиснута кнопка
+        delay(1000); // Затримка у мс
+
+        motorDirection = !motorDirection; // Зміна напрямку руху двигуна
+
+        if (motorDirection) {
+            digitalWrite(motorPin1, HIGH); // Двигун обертається в одному напрямку
+            digitalWrite(motorPin2, LOW);
+        } else {
+            digitalWrite(motorPin1, LOW);
+            digitalWrite(motorPin2, HIGH); // Двигун обертається у зворотному напрямку
+        }
+
+        while (digitalRead(buttonPin) == LOW); // Очікуємо, поки кнопка буде відпущена
+    }
+}

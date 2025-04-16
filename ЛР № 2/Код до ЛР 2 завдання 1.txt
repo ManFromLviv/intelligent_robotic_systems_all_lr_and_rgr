@@ -1,0 +1,20 @@
+// Оголошення змінних для пінів
+const int ledPin = 13;  // Пін, де підключено світлодіод
+const int buttonPin = 8; // Пін, де підключено кнопку
+
+void setup() {
+  pinMode(ledPin, OUTPUT);  // Пін світлодіода як вихід
+  pinMode(buttonPin, INPUT); // Пін кнопки як вхід
+}
+
+void loop() {
+  // Стану кнопки
+  int buttonState = digitalRead(buttonPin);
+
+  // Якщо кнопка натиснута буде увімкнення світлодіоду
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW); // Вимкнути світлодіод
+  }
+}

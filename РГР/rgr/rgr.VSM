@@ -1,0 +1,25 @@
+<VBBSolution name="rgr" perspective="VBB-Studio">
+	<LAYOUT currentView="1" >
+	<VIEW id="1">
+		<PANE>[rgr]Source.SRC</PANE>
+	</VIEW>
+	<VIEW id="2">
+		<PANE>[rgr]Breadboard0.VBB</PANE>
+		<PANE>[rgr]Source.SRC</PANE>
+	</VIEW>
+	<VIEW id="3">
+		<PANE>[rgr]Source.SRC</PANE>
+	</VIEW>
+	</LAYOUT>
+<PROJECTS>
+<PROJECT>rgr.SIM</PROJECT>
+<REFERENCES>
+<VBB-EXCLUDES>
+</VBB-EXCLUDES>
+<USER-INCLUDES>
+</USER-INCLUDES>
+<WEB-INCLUDES>
+</WEB-INCLUDES>
+</REFERENCES>
+</PROJECTS>
+</VBBSolution>

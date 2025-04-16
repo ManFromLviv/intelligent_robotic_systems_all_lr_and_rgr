@@ -1,0 +1,1 @@
+"C:\Users\vladi\AppData\Local\Virtual Breadboard\VBB 4.46\muvium\jikes.exe" -g -classpath  "C:\Users\vladi\AppData\Local\Virtual Breadboard\VBB 4.46\muvium\lib\muvium-JRT.jar";"C:\Users\vladi\AppData\Local\Virtual Breadboard\VBB 4.46\muvium\Arduino.jar"; "C:\Users\vladi\AppData\Local\Virtual Breadboard\VBB 4.46\temp\build\Ivasiv_lw2.java"  2>&1

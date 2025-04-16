@@ -1,0 +1,66 @@
+// Оголошення піну, до якого підключено потенціометр
+int pot = A0;
+
+// Піни, підключені до обмоток крокового двигуна
+int step_1 = 9;
+int step_2 = 8; 
+int step_3 = 11;
+int step_4 = 10;
+
+
+// Змінна для зберігання часу затримки між кроками
+float delay_time;
+
+// Змінна для зчитування значення з потенціометра
+int potValue = 0;
+
+void setup() {
+  // Ініціалізація серійного монітора зі швидкістю 9600 бод
+  Serial.begin(9600);
+
+  // Встановлення пінів крокового двигуна як виходи
+  pinMode(step_1, OUTPUT);
+  pinMode(step_2, OUTPUT);
+  pinMode(step_3, OUTPUT);
+  pinMode(step_4, OUTPUT);
+}
+
+void loop() {
+  // Зчитування аналогового значення з потенціометра (0-1023)
+  potValue = analogRead(pot);
+
+  // Якщо потенціометр повернутий від нуля — розраховуємо затримку
+  if (potValue > 0) {
+    delay_time = 350 - (potValue / 5); // Чим більше значення, тим менша затримка і швидше обертання
+  } else {
+    delay_time = 0; // Якщо потенціометр на нулі — затримка нульова
+  }
+
+  // Фаза 1: вмикаємо обмотки 1 і 2
+  digitalWrite(step_1, HIGH);
+  digitalWrite(step_2, HIGH);
+  digitalWrite(step_3, LOW);
+  digitalWrite(step_4, LOW);
+  delay(delay_time);
+
+  // Фаза 2: вмикаємо обмотки 2 і 3
+  digitalWrite(step_1, LOW);
+  digitalWrite(step_2, HIGH);
+  digitalWrite(step_3, HIGH);
+  digitalWrite(step_4, LOW);
+  delay(delay_time);
+
+  // Фаза 3: вмикаємо обмотки 3 і 4
+  digitalWrite(step_1, LOW);
+  digitalWrite(step_2, LOW);
+  digitalWrite(step_3, HIGH);
+  digitalWrite(step_4, HIGH);
+  delay(delay_time);
+
+  // Фаза 4: вмикаємо обмотки 4 і 1
+  digitalWrite(step_1, HIGH);
+  digitalWrite(step_2, LOW);
+  digitalWrite(step_3, LOW);
+  digitalWrite(step_4, HIGH);
+  delay(delay_time);
+}
