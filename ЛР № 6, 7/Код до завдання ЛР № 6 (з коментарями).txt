@@ -1,0 +1,35 @@
+-- Перевіряємо, чи це етап ініціалізації скрипта
+if (sim_call_type == sim.syscb_init) then
+
+  -- Отримуємо дескриптор (handle) бази маніпулятора
+  modelBase = sim.getObjectHandle('Gripper_Base')
+
+  -- Отримуємо дескриптор датчика близькості
+  sensor = sim.getObjectHandle('Proximity_sensor')
+
+  -- Отримуємо дескриптори лівого та правого приводів (суглобів)
+  leftHandle = sim.getObjectHandle('Left_Joint')
+  rightHandle = sim.getObjectHandle('Right_Joint')
+
+  -- Встановлюємо порогову дистанцію спрацювання датчика
+  detection = 0.5
+
+end
+
+-- Перевіряємо, чи це етап актуалізації (виконання дій під час симуляції)
+if (sim_call_type == sim.syscb_actuation) then
+
+  -- Зчитуємо значення з датчика близькості
+  result, distance = sim.readProximitySensor(sensor)
+
+  -- Якщо об'єкт виявлений і знаходиться ближче до датчика, ніж detection
+  if (result > 0) and (distance < detection) and (distance > 0) then
+      -- Вмикаємо обертання лівого і правого суглобів (захоплення)
+      sim.setJointTargetVelocity(leftHandle, 0.5)
+      sim.setJointTargetVelocity(rightHandle, 0.5)
+  else
+      -- Якщо об'єкта немає або він далеко, зупиняємо суглоби
+      sim.setJointTargetVelocity(leftHandle, 0)
+      sim.setJointTargetVelocity(rightHandle, 0)
+  end
+end
